@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency converter</title>
+<script>
+    function gc(){
+        event.preventDefault();
+        let usd=document.getElementById("usd")
+        let ans=document.getElementById("ans")
+        if(usd.value.length==0)
+        {
+            alert("need something baby")
+            ans.innerHTML="";
+            usd.focus();
+            return;
+
+        }
+        let amt=parseFloat(usd.value)
+if(amt <=0.0)
+{
+alert("invalid amt")
+ans.innerHTML="";
+usd.value="";
+usd.focus();
+return;
+}
+        let urladd="https://api.exchangerate-api.com/v4/latest/USD";
+        fetch(urladd)
+        .then(res =>res.json())
+        .then(data=>{
+let inr=amt*data.rates.INR;
+let msg="amt in"+inr.toFixed(2)
+ans.innerHTML=msg;
+})
+.catch(err => ans.innerHTML="issue"+err);
+    }
+</script>
+</head>
+<body>
+    <center>
+        <form onsubmit="return gc()">
+            <input type="number" step="any" id="usd">
+            <br>
+            <br>
+            <input type="submit" value="convertor">
+        </form>
+        <h1 id="ans"></h1>
+    </center>
+</body>
+</html>
